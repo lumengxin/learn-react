@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+  <div class="counter"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    /* 元素是构成React应用的最小砖块，描述了在屏幕上想看到的内容 */
+    // 与浏览器dom元素不同，react元素是创建开销极小的普通对象。
+    // React DOM会负责更新DOM来与React元素保持一致
+    const element = <h1>hello, element</h1>
+
+    /* 更新已渲染的元素 */
+    // react元素是不可变对象。一旦创建，就无法改变他的子元素或者属性。
+    // 一个元素就像电影的单帧，代表某个特定时刻的ui
+    function tick() {
+      const ele = (
+        <div>
+          <hr/>
+          <h1>hello, ele</h1>
+          <h2>It is {new Date().toLocaleTimeString()}.</h2>
+          <hr/>
+        </div>
+      )
+      // console.log("tick -> ele", ele)
+
+      ReactDOM.render(ele, document.querySelector('.counter'))
+    }
+    setInterval(tick, 1000)
+
+    /* react只更新他需要更新的部分 */
+    // React DOM会将元素和它的子元素与它们之前的状态比较，只进行必要的更新使DOM达到预期的状态
+
+    // 将React元素渲染到根DOM节点中，需传入ReactDOM.render()
+    ReactDOM.render(
+      element,
+      // '根'DOM节点，该节点所有内容都将由React DOM管理
+      // 仅适用React构建的应用通常只有单一的根DOM节点
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div class="app"></div>
+
+  <script type="text/babel">
+  class HelloMessage extends React.Component{
+    // render()方法，接收输入的数并返回要展示的内容。
+    // 传入的数据可在组件中通过this.props在render()访问
+    render() {
+      return (
+        <div>
+          hello {this.props.name}  
+        </div>
+      );
+    }
+  }
+
+  ReactDOM.render(
+    <HelloMessage name="Taylor" />,
+    document.querySelector('.app')
+  )
+  </script>
+</body>
+</html>

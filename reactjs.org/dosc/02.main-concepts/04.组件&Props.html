@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    /* 组件允许将UI拆分为独立可复用的代码片段，并对每个片段进行独立构思 */
+    // 从概念上类似于js函数。接收任意的入参(props),并返回用于描述页面展示内容的React元素
+
+    /* 函数组件与class组件 */
+    // 定义组件最简单的方式就是编写js函数
+    function Welcome(props) {
+      return <h1>hello, {props.name}</h1>
+    }
+    // es6中class定义组件
+    class Welcome2 extends React.Component {
+      render() {
+        return <h1>hello, {this.props.name}</h1>
+      }
+    }
+
+    /* 组合组件 */
+    function App() {
+      return (
+        <div>
+          <Welcome name='Sara' />  
+          <Welcome name='Cahal' />  
+          <Welcome name='Edite' />  
+          <Comment author={author} text={text} date={date} />
+          <hr/>
+        </div>
+      )
+    }
+
+    /* 渲染组件,组件名必须大写字母开头 */
+    // react元素可以是DOM标签，也可以是用户自定义的组件
+    // 当React元素为用户自定义组件时，会将jsx所接受的属性(attributes)及子组件(children)
+    // 转换为单个对象传递给组件，这个对象称之为'props'
+    const ele = <Welcome name="sari" />
+
+    let author = {
+        avatarUrl: '/img/01.png',
+        name: 'lifei'
+      }
+    let text =  '正文内容'
+    let date =  '2012-09-23'
+
+    /* 提取组件。将组件拆分为更小的组件 */
+    /* function Comment(props) {
+      return (
+        <div className="Comment">
+          <div className="UserInfo">
+            <img className="Avatar" 
+              src={props.author.avatarUrl} 
+              alt={props.author.name} 
+            />
+            <div className="UserInfo-name">
+              {props.author.name}  
+            </div>
+          </div>
+          <div className="Comment-text">
+            {props.text}  
+          </div>
+          <div className="Comment-date">
+            {formatDate(props.date)}  
+          </div>
+        </div>
+      )
+    } */
+    function Avatar(props) {
+      return (
+        <img className="Avatar"
+          src={props.user.avatarUrl}
+          alt={props.user.name}
+        />
+      )
+    }
+    function UserInfo(props) {
+      return (
+        <div className="UserInfo">
+          <Avatar user={props.user} />
+          <div className="UserInfo-name">
+            {props.user.name}
+          </div>
+        </div>
+      )
+    }
+    function Comment(props) {
+      return (
+        <div className="Comment">
+          <UserInfo user={props.author} />
+          <div className="Comment-text">
+            {props.text}
+          </div>
+          <div className="Comment-date">
+            {props.date}
+          </div>
+        </div>
+      )
+    } 
+
+    /* Props的只读性 */
+    // '纯函数', 不会尝试更改入参，且多次调用下相同的入参始终返回同样的结果
+    function sum(a, b) {
+      return a + b
+    }
+    // 所有React组件都必须像纯函数一样保护他们的props不被更改
+    function withDraw(account, amout) {
+      account.total -= amout
+    }
+    // 不过，应用程序ui是动态的，随着时间推移而变化
+    // state允许React组件随用户操作、网路响应或者其他变化而动态更改输出内容
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

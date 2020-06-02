@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    // react中，把数组转化为元素列表的过程是相似的
+    const nums = [1,2,3,4,5,6]
+    const doubled = nums.map(num => num * 2)
+    console.log(doubled);
+    
+    // 渲染多个组件
+    const listItems = doubled.map(item => 
+      <li>{item}</li>
+    )
+
+    // 基础列表组件
+    function NumberList(props) {
+      // debugger
+      const {numbers} = props
+      const listItems = numbers.map(number => 
+        // key最好是一个独一无二的字符串，万不得已用index索引
+        <li key={number.toString()}>
+          {number}
+        </li>
+      )
+      return (
+        <ul>{listItems}</ul>
+      )
+    }
+
+    ReactDOM.render(
+      // <ul>{listItems}</ul>,
+      <NumberList numbers={nums} />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

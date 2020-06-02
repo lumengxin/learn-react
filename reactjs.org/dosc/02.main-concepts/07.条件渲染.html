@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    // react中条件渲染和js中一样，使用js运算符if或条件运算符去创建元素来表现当前状态
+    // 然后，让react根据它们来更新ui
+    function UserGreeting(props) {
+      return <h1>Welcome back.</h1>
+    }
+
+    function GuestGreeting(props) {
+      return <h1>Please sign up.</h1>
+    }
+
+    function Greeting(props) {
+      const isLoginIn = props.isLoginIn
+      if (isLoginIn) {
+        return <UserGreeting />
+      }
+      return <GuestGreeting />
+    }
+
+    // 使用变量存储元素
+    function LoginButton(props) {
+      return (
+        <button onClick={props.onClick}>
+          Login
+        </button>
+      )
+    }
+    function LogoutButton(props) {
+      return (
+        <button onClick={props.onClick}>
+          Logout 
+        </button>
+      )
+    }
+    class LoginControl extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          isLoginIn: false
+        }
+        this.handleLogoutClick = this.handleLogoutClick.bind(this)
+        this.handleLoginClick = this.handleLoginClick.bind(this)
+      }
+
+      handleLogoutClick() {
+        this.setState({
+          isLoginIn: false
+        })
+      }
+
+      handleLoginClick() {
+        this.setState({
+          isLoginIn: true
+        })
+      }
+
+      render() {
+        const isLoginIn = this.state.isLoginIn
+        let button
+        // debugger
+        if (isLoginIn) {
+          button = <LogoutButton onClick={this.handleLogoutClick} />
+        } else {
+          button = <LoginButton onClick={this.handleLoginClick} />
+        }
+
+        const message = ['angular', 'react', 'vue']
+        return (
+          <div>
+            <Greeting isLoginIn={isLoginIn} />
+            {button}
+            <br /><hr />
+            <Mailbox unreadMessages={message} />
+            <br /><hr />
+            <Page />
+          </div>
+        )
+      }
+    }
+
+    // 与运算符&&。通过花括号{}包裹代码，可以嵌入任何表达式
+    function Mailbox(props) {
+      const unreadMessages = props.unreadMessages
+      return (
+        <div>
+          <h1>hello</h1>
+          {
+            unreadMessages.length > 0 &&
+            <h2>
+              you have {unreadMessages.length} unread message.
+            </h2>
+          }  
+        </div>
+      )
+    }
+
+    // 三目运算符 condition ? true : false
+
+    // 阻止组件渲染
+    // render方法直接返回null
+    function WarningBanner(props) {
+      if (!props.warn) {
+        return null
+      }
+      return (
+        <div className="warning">
+          Warning!  
+        </div>
+      )
+    }
+    class Page extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          showWarning: true
+        }
+      }
+
+      handleToggleClick = () => {
+        this.setState(state => ({
+          showWarning: !state.showWarning
+        }))
+      }
+
+      render() {
+        return (
+          <div>
+            <WarningBanner warn={this.state.showWarning} />
+            <button onClick={this.handleToggleClick}>
+              {this.state.showWarning ? 'Hide' : 'Show'}  
+            </button>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      // <Greeting isLoginIn={true} />,
+      <LoginControl />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

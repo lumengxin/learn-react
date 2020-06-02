@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/remarkable/2.0.0/remarkable.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel">
+    class MarkdownEditor extends React.Component{
+      constructor(props) {
+        super(props);
+        // this.md = new Remarkable();
+        this.md = remarkable.Remarkable();
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+          value: 'Hello, **world**'
+        };
+      }
+      handleChange(e) {
+        this.setState({value: e.target.value})
+      }
+      getRawMarkup() {
+        return {
+          __html: this.md.render(this.state.value)
+        };
+      }
+      render() {
+        return (
+          <div className="MarkdownEditor">
+            <h3>Input</h3>
+            <label htmlFor="markdown-content">
+              Enter some markdown
+            </label>
+            <textarea
+              id="markdown-content"
+              onChange={this.handleChange}
+              defaultValue={this.state.value}
+            />
+            <h3>Output</h3>
+            <div className="content"
+              dangerouslySetInnerHTML={this.getRawMarkup()}
+            />
+          </div>
+        );
+      }
+    }
+
+    ReactDOM.render(
+      <MarkdownEditor />,
+      document.getElementById('app')
+    )
+
+  </script>
+</body>
+</html>

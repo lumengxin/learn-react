@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="counter"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    /* State与props类似。但state是私有的，并完全受控于当前组件 */
+    // 封装可复用的Clock组件
+    function Clock(props) {
+      return (
+        <div>
+          <hr/>
+          <h1>hello, ele</h1>
+          <h2>It is {props.date.toLocaleTimeString()}.</h2>  
+          <hr/>
+        </div>
+      )
+    }
+    function tick() {
+      ReactDOM.render(
+        <Clock date={new Date()} />,
+        document.getElementById('counter')
+      )
+    }
+    setInterval(tick, 1000)
+
+    /* Colck设置计时器，每秒更新ui。只编写一次代码，让clock组件自我更新 */
+    class Clock2 extends React.Component {
+      // 添加构造函数，为this.state赋初值
+      // 将props传递到父类的构造函数中，始终使用props参数来调用父类的构造函数
+      constructor(props) {
+        super(props)
+        this.state = {
+          date: new Date()
+        }
+      }
+
+      // 添加生命周期方法
+      // Clock组件第一次被渲染到DOM中时，为其设置一个计时器。称为'挂载(mount)'
+      componentDidMount() {
+        this.timeId = setInterval(
+          () => this.tick(),
+          1000
+        )
+      }
+      // Clock组件第一次被删除时，应该清楚计时器。称为'卸载(unmount)'
+      componentWillUnmount() {
+        clearInterval(this.timeId)
+      }
+
+      tick() {
+        // 使用this.setState()更新state
+        this.setState({
+          date: new Date()
+        })
+      }
+
+      render() {
+        return (
+          <div>
+            <h1>hello, ele</h1>
+            <h2>It is {this.state.date.toLocaleString()}.</h2>  
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <Clock2 />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

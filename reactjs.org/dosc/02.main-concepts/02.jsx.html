@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    /* jsx是javascript语法扩展，可以生成react元素 */
+    const title = 'jsx'
+
+    function formatName(user) {
+      return user.firstName + ' ' + user.lastName
+    }
+    const user = {
+      firstName: 'zhang',
+      lastName: 'san'
+    }
+
+    // jsx也是一个表达式，编译之后，会被转为普通js函数调用，
+    // 并且对其取值后得到js对象
+    function getGreeting(user) {
+      if (user) {
+        return <h3>hi, {formatName(user)}</h3>
+      }
+      return <h3>hi, stranger.</h3>
+    }
+
+    // jsx特定属性
+    // 可以使用引号，来将属性值指定为字符串字面量
+    const element1 = <div tabIndex="0"></div>
+    // 使用大括号，在属性值中插入一个js表达式
+    const element2 = <img src={user.avatarUrl} />
+    // jsx语法更接近js，所以React DOM使用cameCase来定义属性名称
+    // class -> className tabindex -> tabIndex
+
+    // jsx防止注入攻击
+    const title2 = 'response.contentInput'
+    // 直接使用时安全的
+    // React DOM在渲染所有输入内容之前默认都会进行转义。
+    // 装换成字符串，可以有效地防止XSS攻击
+    const element3 = <h1>{title2}</h1>
+
+    // jsx表示对象
+    // babel会把jsx转译成一个名为React.createElement()函数调用
+    const element4 = (
+      <h1 className="greeting">
+        hello, world
+      </h1>
+    )
+    // 等价
+    const element44 = React.createElement(
+      'h1',
+      {className: 'greeting'},
+      'hello, world'
+    )
+    // React.createElement()会预先执行一些检查，帮助编写无错代码
+    // 这些对象被称为‘react元素’,描述了希望在屏幕上看到的内容
+    // 简化后的结构
+    const element444 = {
+      type: 'h1',
+      props: {
+        className: 'greeting',
+        children: 'hello, world'
+      }
+    }
+
+    // jsx语法中，{}大括号中可以放任何有效的javascript表达式（解析为值的任何有效代码单位）
+    const ele = <div>
+                  <h2>javascript + xml -> {title}</h2>
+                  <h2>hello, {formatName(user)}</h2><hr />
+                  <div>{getGreeting(user)}</div>
+                </div>
+                
+
+    ReactDOM.render(
+      ele,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>

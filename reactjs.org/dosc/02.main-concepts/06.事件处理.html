@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    // React事件命名采用小驼峰式（camelCase）,而不是纯小写
+    // 使用jsx语法时需要传入一个函数作为事件处理函数，而不是一个字符串
+    // <button onClick={activateLasers}>
+    //   activate 
+    // </button>
+
+    // 不能通过返回false的方式阻止默认行为，必须显式使用preventDefault
+    function ActionLink() {
+      function handleClick(e) {
+        // e是一个合成事件。react根据W3C规范定义，不需要考虑兼容
+        e.preventDefault
+        console.log('the link was clicked');
+      }
+      return (
+        <a href='#' onClick={handleClick}>
+          Click me 
+        </a>
+      )
+    }
+
+    // 一般不需要使用 addEventListener 为已创建的 DOM 元素添加监听器。
+    // 只需要在该元素初始渲染的时候添加监听器即可
+    class Toggle extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          isToggleOn: true
+        }
+
+        // 1.在回调中使用'this'
+        this.handleClick = this.handleClick.bind(this)
+      }
+
+      // 2.使用实验性的public class fields语法
+      // handleClick = () => {
+      //   this.setState(state => ({
+      //     isToggleOn: !state.isToggleOn
+      //   }))
+      // }
+      handleClick() {
+        this.setState(state => ({
+          isToggleOn: !state.isToggleOn
+        }))
+      }
+
+      deleteRow() {
+        //
+      }
+
+      render() {
+        return (
+          <div>
+            {/* class方法默认不会绑定this, 此时值为undefined */}
+            {/* 3.回调中使用箭头函数 */}
+            {/* <button onClick={() => this.handleClick()}> */}
+            <button onClick={this.handleClick}>
+              {this.state.isToggleOn ? 'ON' : 'OFF'}
+            </button>
+
+            { /* 向事件处理程序传递参数 
+            <button onClick={(e) => this.deleteRow(id, e)}>Delete</button>
+            <button onClick={this.deleteRow.bind(this, id)}>Delete</button> */}
+          </div>
+        )
+      }
+    }
+    
+    ReactDOM.render(
+      <Toggle />,
+      document.getElementById('root')
+    )
+  </script>
+</body>
+</html>
